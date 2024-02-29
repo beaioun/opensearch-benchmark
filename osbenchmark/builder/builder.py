@@ -612,18 +612,18 @@ class NodeBuilderActor(actor.BenchmarkActor):
 def load_cluster_config(cfg, external):
     # externally provisioned clusters do not support cluster_configs / plugins
     if external:
-        cluster_config = None
+        loaded_cluster_config = None
         plugins = []
     else:
         cluster_config_path = cluster_config.cluster_config_path(cfg)
-        cluster_config = cluster_config.load_cluster_config(
+        loaded_cluster_config = cluster_config.load_cluster_config(
             cluster_config_path,
             cfg.opts("builder", "cluster_config.names"),
             cfg.opts("builder", "cluster_config.params"))
         plugins = cluster_config.load_plugins(cluster_config_path,
                                     cfg.opts("builder", "cluster_config.plugins", mandatory=False),
                                     cfg.opts("builder", "plugin.params", mandatory=False))
-    return cluster_config, plugins
+    return loaded_cluster_config, plugins
 
 
 def create(cfg, metrics_store, node_ip, node_http_port, all_node_ips, all_node_ids, sources=False, distribution=False,
